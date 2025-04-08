@@ -4,8 +4,12 @@ const puppeteer = require('puppeteer');
 
 (async () => {
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--remote-debugging-port=9222'],
     headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--remote-debugging-port=9222'
+    ],
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium'
   });
 
