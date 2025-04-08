@@ -1,13 +1,22 @@
 #!/usr/bin/env node
-var prerender = require('./lib');
+const { exec } = require('child_process');
+const prerender = require('./lib');
 
-var server = prerender();
+exec('node chrome.js', (err, stdout, stderr) => {
+  if (err) {
+    console.error('🚫 Failed to launch Chrome:', err);
+    return;
+  }
 
-server.use(prerender.sendPrerenderHeader());
-server.use(prerender.browserForceRestart());
-// server.use(prerender.blockResources());
-server.use(prerender.addMetaTags());
-server.use(prerender.removeScriptTags());
-server.use(prerender.httpHeaders());
+  console.log(stdout);
 
-server.start();
+  const server = prerender();
+
+  server.use(prerender.sendPrerenderHeader());
+  server.use(prerender.browserForceRestart());
+  server.use(prerender.addMetaTags());
+  server.use(prerender.removeScriptTags());
+  server.use(prerender.httpHeaders());
+
+  server.start();
+});
