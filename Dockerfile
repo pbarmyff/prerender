@@ -1,6 +1,5 @@
 FROM node:18-slim
 
-# Install necessary packages for Puppeteer + Chrome
 RUN apt-get update && apt-get install -y \
   wget \
   ca-certificates \
@@ -19,16 +18,14 @@ RUN apt-get update && apt-get install -y \
   libxdamage1 \
   libxrandr2 \
   xdg-utils \
-  --no-install-recommends && \
-  rm -rf /var/lib/apt/lists/*
+  --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY . .
 
-# Install deps & chromium via puppeteer
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
+
 RUN npm install
 
-# Expose the app port
 EXPOSE 3000
-
 CMD ["npm", "start"]
